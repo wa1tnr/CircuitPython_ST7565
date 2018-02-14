@@ -1,0 +1,149 @@
+Wed Feb 14 15:37:52 UTC 2018
+
+[7:43 PM] þeshipu: the ssd1306 driver should be good as a starting point
+
+  * examine SSD1306 and ST7565 datasheets
+
+    [ ssd1306 site:adafruit.com ] google search
+    [ https://cdn-shop.adafruit.com/datasheets/SSD1306.pdf ]
+    [ https://www.adafruit.com/product/250 ] ST7565
+                      [ https://cdn-shop.adafruit.com/product-files/250/TG12864H3-04MA0_A00.pdf ]
+    [ https://cdn-learn.adafruit.com/assets/assets/000/009/765/original/TG12864H3-03A_EN_V1.1.pdf ]
+    
+TG datasheet findings (the ST7565):
+
+ST7565 logic: 3.3v (Vdd-Vss)
+LCD: 10.5v (Vdd-Vo)
+Input High V_IH  2.0 volts thru Vdd range
+Input Low  V_IL -0.3 volts thru 0.8 volts
+Output High V_OH 2.4 volts thru Vdd
+Output Low  V_OL 0 volts thru 0.4 volts
+
+RESPONSE TIME  Table 6
+  T RISE   200 ms typical; 300 ms max
+  T FALL   150 ms typical; 200 ms max
+
+T Rise and T Fall would affect timing of the protocol for programming
+and may be a real difference between the ST7565 and the SSD1306.
+
+
+
+1 /CS  LOW  Chip Select - LOW active
+2 /RST LOW  when /RST is LOW, initialization (reset)
+
+3 A0   H/L  Register Select (RS on some systems) HIGH: data  LOW: commands/control
+4 SCLK H/L  Serial Clock
+5 SID  H/L  Serial Input Data
+
+
+6 Vdd - logic psu
+7 Vss - GND
+8 K - cathode backlight
+9 A - anode backlight
+
+Now, the other one (SSD1306) has a wide variety of interfaces.
+
+  * 6800/8000 Parallel
+  * I2C
+  * SPI - ours
+
+SPI is chosen simply because that's all ST7565 wants to know about.
+
+   * D0-D7 present as on 16x2 char LCD.  D7 is probably the SPI data.
+   * BS2-0 are MCU bus interface selection. May be programmed in CP so watch for them.
+     BS0 is brought to a logic HIGH for SPI; BS1 and BS2 are held LOW in this mode.
+     (or at least pulsed low at some point during setup?)
+
+   Table 8.1  MCU Interface selection
+
+   3-Wire SPI
+   D7-D3 tied LOW
+   D2 n/c
+   D1 SDIN - serial data input maybe
+   D0 SCLK - serial clock maybe
+   E and R/W tied LOW
+   CS is CS
+   D/C tied LOW -- here is the difference between 3 and 4 wire SPI I think
+   RES is RES - all modes
+   
+   Factored:
+   3-Wire SPI
+   D1 SDIN - serial data input probably
+   D0 SCLK - serial clock probably
+   CS is CS
+   D/C tied LOW -- here is the difference between 3 and 4 wire SPI I think
+   RES is RES - all modes (reset?)
+   
+   Data
+   Clock
+   Chip Select
+   Reset
+   D/C may in fact be wanted (4-wire SPI!)
+
+New one ST7565:   
+1 /CS  LOW  Chip Select - LOW active
+2 /RST LOW  when /RST is LOW, initialization (reset)
+
+3 A0   H/L  Register Select (RS on some systems) HIGH: data  LOW: commands/control
+4 SCLK H/L  Serial Clock
+5 SID  H/L  Serial Input Data
+   
+
+
+   +-----------------------+
+   |  Both:                |
+   |   ST      SSD         |
+   |   7565    1306        |
+   |   1 /CS   CS          |
+   |   2 /RST  RES         |
+   |   3 A0    D/C         |
+   |   4 SCLK  D0 (SCLK)   |
+   |   5 SID   D1 (SDIN)   |
+   +-----------------------+
+
+This table (immediately above) is the best effort so far
+(14 Feb 15:28 UTC) to identify the electrical compatibilities
+between ST7565 (target) and SSD1306 (model).
+
+
+
+
+
+
+
+  * identify common pins to both and
+    any strong differences between them
+  * glance at the protocols for both, native
+    to the datasheets' recommendations for
+    each
+  * Reestablish present pinout wiring from
+    Feather M0 Express to ST7565 -- already
+    known that the Arduino IDE sets the
+    pins as OUTPUT (push-pull).  Note if
+    any bidirectional issues arise, such
+    as querying the glcd as to cursor
+    position or any sort of command state
+    it can report on to the host micro.
+  * Note in passing if the SSD1306 is setup by an
+    external CP lib for the SPI physical interface,
+    and perhaps the basics involved in pin assignments.
+  * attempt to pretend the 7565 is a 1306, pare down
+    existing CP programming to get a most primitive
+    conversation going between CircuitPython and
+    7565 -- the goal is to make sure there's no
+    obvious electrical issue in leaving the 7565
+    connected to Feather M0 Express GPIO during the
+    earliest stages of driver development.
+  * In doing so make a new st7565_primitives.mpy or
+    somesuch -- does not have to follow the CP
+    structure; only has to be electrically non-
+    catastrophically compatible (so that the existing,
+    working circuit does not have to be dismantled
+    for early tests, by lifting pins and such to
+    prevent circuit completion and Bad Current. ;)
+  * Look at existing learn.afruit.com tutorials wrt
+    SSD1306 physical interfacing (pinouts) and see
+    how pin assignment is handled in CP (they must
+    offer a means to use alternate pins, which is
+    the case already for ST7565 current wiring)>
+
