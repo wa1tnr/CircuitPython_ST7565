@@ -27,30 +27,30 @@
 
 MicroPython ST7565 graphic LCD driver, SPI interface
 
-From: adafruit_ssd1306.py, samilar intellectual property details.
+From: adafruit_ssd1306.py, similar intellectual property details.
 
 * Author(s): Tony DiCola, Michael McWethy.  Contributions: Christopher W Hafey, wa1tnr
 """
 
 import time
+import framebuf
+
+from adafruit_bus_device import i2c_device, spi_device
+from micropython import const
+
+__version__ = "0.0.0-auto.0"
+__repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_fictional_ST7565.git"
+
+#pylint: disable-msg=bad-whitespace
+# register definitions
+SET_CONTRAST        = const(0x81)
+
+ //////////////////////// intrusion ////////////////////////////
 
 
+ quick visual means to identify a large block of inserted code.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+ //////////////////////// intrusion ////////////////////////////
 
 
 
