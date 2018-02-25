@@ -2,6 +2,8 @@
 #
 # Copyright (c) 2017 Michael McWethy
 #
+# portions Copyright (c) 2018 Christopher W Hafey, wa1tnr
+#
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
 # in the Software without restriction, including without limitation the rights
@@ -29,8 +31,6 @@ MicroPython SSD1306 OLED driver, I2C and SPI interfaces
 """
 
 import time
-
-
 
 
 
