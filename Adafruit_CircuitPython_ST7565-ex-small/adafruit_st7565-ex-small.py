@@ -22,17 +22,17 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 """
-`adafruit_ssd1306`
+`adafruit_st7565-ex-small`
 ====================================================
 
-MicroPython SSD1306 OLED driver, I2C and SPI interfaces
+MicroPython ST7565 graphic LCD driver, SPI interface
 
-* Author(s): Tony DiCola, Michael McWethy
+From: adafruit_ssd1306.py, samilar intellectual property details.
+
+* Author(s): Tony DiCola, Michael McWethy.  Contributions: Christopher W Hafey, wa1tnr
 """
 
 import time
-
-
 
 
 
