@@ -27,7 +27,7 @@
 
 MicroPython ST7565 graphic LCD driver, SPI interface
 
-From: adafruit_ssd1306.py, similar intellectual property details.
+From: adafruit_ssd1306.py, with similar intellectual property details.
 
 * Author(s): Tony DiCola, Michael McWethy.  Contributions: Christopher W Hafey, wa1tnr
 """
