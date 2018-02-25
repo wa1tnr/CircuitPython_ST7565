@@ -50,6 +50,7 @@ CMD_RMW                 = const(0xE0)
 CMD_RMW_CLEAR           = const(0xEE)
 CMD_INTERNAL_RESET      = const(0xE2)
 
+
 # Early versions of the present program will kludge hexadecimal values
 # directly into the code, and will not use these constants.
 
@@ -96,8 +97,61 @@ class _ST7565: # was: _ST7565nis
         # for cmd in ( 0x10, 0x00, 0xb0, 0xe0):
         #    self.write_cmd(cmd)
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         # self.fill(0)
         # self.show()
+
+    def poweroff(self):
+        franz = 0 # noop
+
+
+    def contrast(self, contrast):
+        franz = 0 # noop
+
+
+
+    def invert(self, invert):
+        franz = 0 # noop
+
+
+    def write_framebuf(self):
+        """Derived class must implement this"""
+        raise NotImplementedError
+
+    def write_cmd(self, cmd):
+        """Derived class must implement this"""
+        raise NotImplementedError
+
+    def poweron(self): # L140 old
+        "Reset device and turn on the display."
+        if self.reset_pin:
+            self.reset_pin.value = 1
+            time.sleep(0.001)
+            self.reset_pin.value = 0
+            time.sleep(0.010)
+            self.reset_pin.value = 1
+            time.sleep(0.010)
+        # self.write_cmd(SET_DISP | 0x01)
+
+    def show(self):
+        """Update the display"""
+        xpos0 = 0
+
 
  //////////////////////// intrusion ////////////////////////////
 
@@ -105,60 +159,6 @@ class _ST7565: # was: _ST7565nis
  quick visual means to identify a large block of inserted code.
 
  //////////////////////// intrusion ////////////////////////////
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
