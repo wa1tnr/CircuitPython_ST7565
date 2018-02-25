@@ -88,9 +88,16 @@ class _ST7565: # was: _ST7565nis
         self.poweron()
         self.init_display()
 
-#   def init_display(self):
+    def init_display(self):
         """Base class to initialize display"""
+        for cmd in ( 0xa3, 0x2c, 0x2e, 0x2f, 0x26, 0xaf, 0x81, 0x1d):
+            self.write_cmd(cmd)
 
+        # for cmd in ( 0x10, 0x00, 0xb0, 0xe0):
+        #    self.write_cmd(cmd)
+
+        # self.fill(0)
+        # self.show()
 
  //////////////////////// intrusion ////////////////////////////
 
@@ -98,13 +105,6 @@ class _ST7565: # was: _ST7565nis
  quick visual means to identify a large block of inserted code.
 
  //////////////////////// intrusion ////////////////////////////
-
-
-
-
-
-
-
 
 
 
