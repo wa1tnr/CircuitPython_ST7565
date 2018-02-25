@@ -35,7 +35,7 @@ From: adafruit_ssd1306.py, similar intellectual property details.
 import time
 import framebuf
 
-from adafruit_bus_device import i2c_device, spi_device
+from adafruit_bus_device import spi_device
 from micropython import const
 
 __version__ = "0.0.0-auto.0"
@@ -43,7 +43,12 @@ __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_fictional_ST7565.
 
 #pylint: disable-msg=bad-whitespace
 # register definitions
-SET_CONTRAST        = const(0x81)
+SET_VOLUME_FIRST        = const(0x81)  # enhance gLCD contrast
+SET_VOLUME_SECOND       = const(0x00)  # contrast, follow-on value
+                                       # ex. 0x81, then 0x00 | (0x1d & 0x3f)
+
+# Early versions of the present program will kludge hexadecimal values
+# directly into the code, and will not use these constants.
 
  //////////////////////// intrusion ////////////////////////////
 
@@ -51,11 +56,6 @@ SET_CONTRAST        = const(0x81)
  quick visual means to identify a large block of inserted code.
 
  //////////////////////// intrusion ////////////////////////////
-
-
-
-
-
 
 
 
