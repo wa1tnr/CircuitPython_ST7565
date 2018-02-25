@@ -1,7 +1,7 @@
  
-// Sat Feb 24 19:21:56 UTC 2018
+// Sun Feb 25 05:49:32 UTC 2018
 
-// TALLOMEV    MONDIEUX    PALICA   CANFAW  ELKIND
+// CALIPULLER   TALLOMEV    MONDIEUX    PALICA   CANFAW  ELKIND
 
 // previous: 
 
@@ -23,10 +23,14 @@ some of this code was written by <cstone@pobox.com> originally; it is in the pub
 #include <stdlib.h>
 #include "Arduino.h"
 
+// MOSI 29 SCK 30
 
 
-int8_t sid  = 11;
-int8_t sclk = 10;
+int8_t sid  = 29;
+// 11;
+// int8_t sclk = 10;
+int8_t sclk = 30;
+
 int8_t a0   = 9;
 int8_t rst  = 6;
 int8_t cs   = 5;
