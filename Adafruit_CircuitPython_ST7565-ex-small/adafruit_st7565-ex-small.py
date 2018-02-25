@@ -58,13 +58,38 @@ CMD_TEST                = const(0xF0)
 #pylint: enable-msg=bad-whitespace
 
 
-class _ST7565:
+class _ST7565: # was: _ST7565nis
     """Base class for ST7565 display driver"""
     #pylint: disable-msg=too-many-arguments
     #pylint: disable-msg=too-many-instance-attributes
     def __init__(self, framebuffer, width, height, external_vcc, reset):
         self.framebuf = framebuffer
         self.fill = self.framebuf.fill
+        self.pixel = self.framebuf.pixel
+        self.line = self.framebuf.line
+        self.text = self.framebuf.text
+        self.scroll = self.framebuf.scroll
+        self.blit = self.framebuf.blit
+        self.vline = self.framebuf.vline
+        self.hline = self.framebuf.hline
+        self.fill_rect = self.framebuf.fill_rect
+        self.width = width
+        self.height = height
+        self.external_vcc = external_vcc
+        # reset may be None if not needed
+        self.reset_pin = reset
+        if self.reset_pin:
+            self.reset_pin.switch_to_output(value=0)
+        self.pages = self.height // 8
+        # Note the subclass must initialize self.framebuf to a framebuffer.
+        # This is necessary because the underlying data buffer is different
+        # between I2C and SPI implementations of the upstream program (I2C
+        # needs an extra byte).
+        self.poweron()
+        self.init_display()
+
+#   def init_display(self):
+        """Base class to initialize display"""
 
 
  //////////////////////// intrusion ////////////////////////////
@@ -73,31 +98,6 @@ class _ST7565:
  quick visual means to identify a large block of inserted code.
 
  //////////////////////// intrusion ////////////////////////////
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
