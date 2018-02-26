@@ -159,9 +159,9 @@ class _ST7565: # was: _ST7565nis
         self.write_cmd(0x10) # TODO_LIST: symbolize. was: SET_COL_ADDR
         self.write_cmd(xpos0)
         self.write_cmd(xpos1)
-        self.write_cmd(0xb0) # TODO_LIST: symbolize.  was: SET_PAGE_ADDR
-        self.write_cmd(0)
-        self.write_cmd(self.pages - 1)
+        # self.write_cmd(0xb0) # TODO_LIST: symbolize.  was: SET_PAGE_ADDR
+        self.write_cmd(0xb0 | self.pages - 1)
+        self.write_cmd(0xe0) # local kludge ST7565 - untested here
         self.write_framebuf()
 
 
