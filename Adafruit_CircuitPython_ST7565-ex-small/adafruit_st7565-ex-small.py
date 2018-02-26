@@ -213,9 +213,9 @@ class ST7565_SPI(_ST7565):
     :param spi: the SPI peripheral to use,
     :param a0: Register Select - the data/command pin to use (often labeled "D/C" but is a0 here),
     :param reset: the reset pin to use - aka /RST - active LOW,
-    :param /cs: the chip-select pin to use (sometimes labeled "SS" but is /cs here).
+    :param cs: the chip-select pin to use (sometimes labeled "SS" but is /cs here).
     """
-    def __init__(self, width, height, spi, a0, reset, /cs, *,
+    def __init__(self, width, height, spi, a0, reset, cs, *,
                  external_vcc=False, baudrate=8000000, polarity=0, phase=0):
         self.rate = 10 * 1024 * 1024
         a0.switch_to_output(value=0)
