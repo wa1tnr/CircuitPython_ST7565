@@ -151,6 +151,18 @@ class _ST7565: # was: _ST7565nis
     def show(self):
         """Update the display"""
         xpos0 = 0
+        xpos1 = self.width - 1
+        if self.width == 64:
+            # displays with width of 64 pixels are shifted by 32
+            xpos0 += 32
+            xpos1 += 32
+        self.write_cmd(SET_COL_ADDR)
+        self.write_cmd(xpos0)
+        self.write_cmd(xpos1)
+        self.write_cmd(SET_PAGE_ADDR)
+        self.write_cmd(0)
+        self.write_cmd(self.pages - 1)
+        self.write_framebuf()
 
 
  //////////////////////// intrusion ////////////////////////////
@@ -159,18 +171,6 @@ class _ST7565: # was: _ST7565nis
  quick visual means to identify a large block of inserted code.
 
  //////////////////////// intrusion ////////////////////////////
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
