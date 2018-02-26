@@ -93,33 +93,44 @@ def draw_solid_bar(): # fill all pixels in 8 consecutive rows to form a black ba
     display.fill(0xff)
     display.show()
 
+def all_pixels_off():
+    global cmd
+    for i in range(0,8):
+        cmd = (0xb0 | i) ; display.write_cmd(cmd)
+        cmd = (0x10 | 0) ; display.write_cmd(cmd)
+        cmd = (0x00 | 0) ; display.write_cmd(cmd)
+        cmd = 0xe0       ; display.write_cmd(cmd)
+        for j in range(0,129):
+            cmd = (0x00)
+            display.write_data_out(cmd)
+
 def all_pixels_on():
     global cmd
     for i in range(0,8):
-        cmd = (0xb0 | i) ; write_cmd()
-        cmd = (0x10 | 0) ; write_cmd()
-        cmd = (0x00 | 0) ; write_cmd()
-        cmd = 0xe0       ; write_cmd()
+        cmd = (0xb0 | i) ; display.write_cmd(cmd)
+        cmd = (0x10 | 0) ; display.write_cmd(cmd)
+        cmd = (0x00 | 0) ; display.write_cmd(cmd)
+        cmd = 0xe0       ; display.write_cmd(cmd)
         for j in range(0,129):
             cmd = (0xff)
-            write_data()
+            display.write_data_out(cmd)
 
 def disp_text_geom():
     global cmd
     column =  32 # must be zero or a multiple of 16
     icol   = column + 16
     cursor_right = (icol // 16) - 1
-    cmd = (0x10 | cursor_right) ; write_cmd() # upper x positional byte
-    cmd = (0x00 | 3)    ; write_cmd() # lower x positional byte - fine tuning
-    cmd = (0xb0 | 0)    ; write_cmd() # only  y positional byte - page 0 is middle row
-    cmd = 0xe0          ; write_cmd()
+    cmd = (0x10 | cursor_right) ; display.write_cmd(cmd) # upper x positional byte
+    cmd = (0x00 | 3)    ; display.write_cmd(cmd) # lower x positional byte - fine tuning
+    cmd = (0xb0 | 0)    ; display.write_cmd(cmd) # only  y positional byte - page 0 is middle row
+    cmd = 0xe0          ; display.write_cmd(cmd)
     # write data here
 
 def cmd_out8():
     global cmd, mbytes
     for p in range(0,8):
         cmd = mbytes[p]
-        write_cmd()
+        display.write_cmd(cmd)
 
 def init_display():
     global cmd, mbytes
