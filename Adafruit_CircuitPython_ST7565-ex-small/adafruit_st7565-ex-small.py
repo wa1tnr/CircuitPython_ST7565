@@ -165,6 +165,80 @@ class _ST7565: # was: _ST7565nis
         self.write_framebuf()
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#pylint: disable-msg=too-many-arguments
+class ST7565_SPI(_ST7565):
+    """
+    SPI class for ST7565
+
+    :param width: the width of the physical screen in pixels,
+    :param height: the height of the physical screen in pixels,
+    :param spi: the SPI peripheral to use,
+    :param dc: the data/command pin to use (often labeled "D/C"),
+    :param reset: the reset pin to use,
+    :param cs: the chip-select pin to use (sometimes labeled "SS").
+    """
+    def __init__(self, width, height, spi, dc, reset, cs, *,
+                 external_vcc=False, baudrate=8000000, polarity=0, phase=0):
+        self.rate = 10 * 1024 * 1024
+        dc.switch_to_output(value=0)
+        self.spi_device = spi_device.SPIDevice(spi, cs, baudrate=baudrate,
+                                               polarity=polarity, phase=phase)
+        self.dc_pin = dc
+        self.buffer = bytearray((height // 8) * width)
+        framebuffer = framebuf.FrameBuffer1(self.buffer, width, height)
+        super().__init__(framebuffer, width, height, external_vcc, reset)
+
+    def write_cmd(self, cmd):
+        """Send a command to the SPI device"""
+        self.dc_pin.value = 0
+        with self.spi_device as spi:
+            spi.write(bytearray([cmd]))
+
+    def write_framebuf(self):
+        """write to the frame buffer via SPI"""
+        self.dc_pin.value = 1
+        with self.spi_device as spi:
+            spi.write(self.buffer)
+
+
  //////////////////////// intrusion ////////////////////////////
 
 
@@ -173,68 +247,4 @@ class _ST7565: # was: _ST7565nis
  //////////////////////// intrusion ////////////////////////////
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# Line 240
+# Line 250
