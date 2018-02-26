@@ -211,40 +211,37 @@ class ST7565_SPI(_ST7565):
     :param width: the width of the physical screen in pixels,
     :param height: the height of the physical screen in pixels,
     :param spi: the SPI peripheral to use,
-    :param dc: the data/command pin to use (often labeled "D/C"),
-    :param reset: the reset pin to use,
-    :param cs: the chip-select pin to use (sometimes labeled "SS").
+    :param a0: Register Select - the data/command pin to use (often labeled "D/C" but is a0 here),
+    :param reset: the reset pin to use - aka /RST - active LOW,
+    :param /cs: the chip-select pin to use (sometimes labeled "SS" but is /cs here).
     """
-    def __init__(self, width, height, spi, dc, reset, cs, *,
+    def __init__(self, width, height, spi, a0, reset, /cs, *,
                  external_vcc=False, baudrate=8000000, polarity=0, phase=0):
         self.rate = 10 * 1024 * 1024
-        dc.switch_to_output(value=0)
+        a0.switch_to_output(value=0)
         self.spi_device = spi_device.SPIDevice(spi, cs, baudrate=baudrate,
                                                polarity=polarity, phase=phase)
-        self.dc_pin = dc
+        self.a0_pin = a0
         self.buffer = bytearray((height // 8) * width)
         framebuffer = framebuf.FrameBuffer1(self.buffer, width, height)
         super().__init__(framebuffer, width, height, external_vcc, reset)
 
     def write_cmd(self, cmd):
         """Send a command to the SPI device"""
-        self.dc_pin.value = 0
+        self.a0_pin.value = 0
         with self.spi_device as spi:
             spi.write(bytearray([cmd]))
 
     def write_framebuf(self):
         """write to the frame buffer via SPI"""
-        self.dc_pin.value = 1
+        self.a0_pin.value = 1
         with self.spi_device as spi:
             spi.write(self.buffer)
 
+    def write_data_out(self, cmd): # not found in SSD1306 driver
+        """write data out via SPI"""
+        self.a0_pin.value = 1
+        with self.spi_device as spi:
+            spi.write(bytearray([cmd])) # useful alternate means to deliver data
 
- //////////////////////// intrusion ////////////////////////////
-
-
- quick visual means to identify a large block of inserted code.
-
- //////////////////////// intrusion ////////////////////////////
-
-
-# Line 250
+# Line 247
