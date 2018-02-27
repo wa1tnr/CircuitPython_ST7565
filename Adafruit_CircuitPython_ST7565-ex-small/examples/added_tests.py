@@ -133,13 +133,14 @@ def cmd_out8():
         cmd = mbytes[p]
         display.write_cmd(cmd)
 
-def init_display():
+def init_lcd():
     global cmd, mbytes
     cs.value  = 0 ;
     rst.value = 0 ; time.sleep(0.2)
     rst.value = 1 ;
-    mbytes = bytearray(b'\xa3\x2c\x2e\x2f\x26\xaf\x81\x1d') # 8 bytes
-    cmd_out8()
+    # mbytes = bytearray(b'\xa3\x2c\x2e\x2f\x26\xaf\x81\x1d') # 8 bytes
+    # cmd_out8()
+    display.init_display()
     all_pixels_off()
     all_pixels_on()
     time.sleep(8.1)
@@ -147,6 +148,6 @@ def init_display():
     disp_text_geom()
     write_short_phrase_to_lcd()
 
-init_display()
+init_lcd()
 
 # time.sleep(8.1)
