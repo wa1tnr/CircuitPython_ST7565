@@ -140,6 +140,9 @@ def init_display():
     mbytes = bytearray(b'\xa3\x2c\x2e\x2f\x26\xaf\x81\x1d') # 8 bytes
     cmd_out8()
     all_pixels_off()
+    all_pixels_on()
+    time.sleep(8.1)
+    all_pixels_off()
     disp_text_geom()
     write_short_phrase_to_lcd()
 
