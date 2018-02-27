@@ -104,28 +104,6 @@ def all_pixels_off():
             cmd = (0x00)
             display.write_data_out(cmd)
 
-def all_pixels_on():
-    global cmd
-    for i in range(0,8):
-        cmd = (0xb0 | i) ; display.write_cmd(cmd)
-        cmd = (0x10 | 0) ; display.write_cmd(cmd)
-        cmd = (0x00 | 0) ; display.write_cmd(cmd)
-        cmd = 0xe0       ; display.write_cmd(cmd)
-        for j in range(0,129):
-            cmd = (0xff)
-            display.write_data_out(cmd)
-
-def disp_text_geom():
-    global cmd
-    column =  32 # must be zero or a multiple of 16
-    icol   = column + 16
-    cursor_right = (icol // 16) - 1
-    cmd = (0x10 | cursor_right) ; display.write_cmd(cmd) # upper x positional byte
-    cmd = (0x00 | 3)    ; display.write_cmd(cmd) # lower x positional byte - fine tuning
-    cmd = (0xb0 | 0)    ; display.write_cmd(cmd) # only  y positional byte - page 0 is middle row
-    cmd = 0xe0          ; display.write_cmd(cmd)
-    # write data here
-
 def cmd_out8():
     global cmd, mbytes
     for p in range(0,8):
@@ -140,12 +118,8 @@ def init_display():
     mbytes = bytearray(b'\xa3\x2c\x2e\x2f\x26\xaf\x81\x1d') # 8 bytes
     cmd_out8()
     all_pixels_off()
-    all_pixels_on()
-    time.sleep(8.1)
-    all_pixels_off()
     disp_text_geom()
     write_short_phrase_to_lcd()
 
 init_display()
 
-# time.sleep(8.1)
