@@ -22,7 +22,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 """
-`adafruit_st7565-ex-small`
+`adafruit_st7565`
 ====================================================
 
 MicroPython ST7565 graphic LCD driver, SPI interface
@@ -214,9 +214,13 @@ class ST7565_SPI(_ST7565):
     :param a0: Register Select - the data/command pin to use (often labeled "D/C" but is a0 here),
     :param reset: the reset pin to use - aka /RST - active LOW,
     :param cs: the chip-select pin to use (sometimes labeled "SS" but is /cs here).
+         baudrate=8000000,
+         baudrate=10000000,
+         baudrate=12000000,
+         baudrate=20000000, # vroom!
     """
     def __init__(self, width, height, spi, a0, reset, cs, *,
-                 external_vcc=False, baudrate=8000000, polarity=0, phase=0):
+                 external_vcc=False, baudrate=20000000, polarity=0, phase=0):
         self.rate = 10 * 1024 * 1024
         a0.switch_to_output(value=0)
         self.spi_device = spi_device.SPIDevice(spi, cs, baudrate=baudrate,

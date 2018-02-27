@@ -34,7 +34,8 @@ spi = busio.SPI(clk, MOSI=data)
 # Create the ST7565 gLCD class.
 # The first two parameters are the pixel width and pixel height.  Change these
 # to the right size for your display!
-display = adafruit_st7565.ST7565_SPI(128, 64, spi, a0, rst, cs, external_vcc=False, baudrate=2000000, polarity=0, phase=0)
+# display = adafruit_st7565.ST7565_SPI(128, 64, spi, a0, rst, cs, external_vcc=False, baudrate=2000000, polarity=0, phase=0)
+display = adafruit_st7565.ST7565_SPI(128, 64, spi, a0, rst, cs, external_vcc=False,                     polarity=0, phase=0)
 
 display.fill(1)
 
