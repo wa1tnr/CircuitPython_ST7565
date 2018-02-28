@@ -1,0 +1,11 @@
+Files with the word CAUTION in their names are not
+meant to be loaded on a device, unmodified, except
+to be used to help answer the question 
+
+  'why did it go so wrong that now the device
+   must be erased at low level, to reuse it
+   for anything else?'
+
+and similar questions.
+
+Wed Feb 28 00:25:46 UTC 2018
