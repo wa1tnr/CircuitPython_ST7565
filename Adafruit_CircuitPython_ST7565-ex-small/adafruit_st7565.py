@@ -152,15 +152,14 @@ class _ST7565: # was: _ST7565nis
         """Update the display"""
         xpos0 = 0
         xpos1 = self.width - 1
-        if self.width == 64:
-            # displays with width of 64 pixels are shifted by 32
-            xpos0 += 32
-            xpos1 += 32
         self.write_cmd(0x10) # TODO_LIST: symbolize. was: SET_COL_ADDR
-        self.write_cmd(xpos0)
-        self.write_cmd(xpos1)
+        self.write_cmd(0x0)
+        self.write_cmd(0x0)
+        # self.write_cmd(xpos0)
+        # self.write_cmd(xpos1)
         # self.write_cmd(0xb0) # TODO_LIST: symbolize.  was: SET_PAGE_ADDR
-        self.write_cmd(0xb0 | self.pages - 1)
+        # self.write_cmd(0xb0 | self.pages - 1)
+        self.write_cmd(0xb0 | 0x3)
         self.write_cmd(0xe0) # local kludge ST7565 - untested here
         self.write_framebuf()
 
@@ -226,6 +225,7 @@ class ST7565_SPI(_ST7565):
         self.spi_device = spi_device.SPIDevice(spi, cs, baudrate=baudrate,
                                                polarity=polarity, phase=phase)
         self.a0_pin = a0
+        # self.buffer = bytearray(height * width)
         self.buffer = bytearray((height // 8) * width)
         framebuffer = framebuf.FrameBuffer1(self.buffer, width, height)
         super().__init__(framebuffer, width, height, external_vcc, reset)
