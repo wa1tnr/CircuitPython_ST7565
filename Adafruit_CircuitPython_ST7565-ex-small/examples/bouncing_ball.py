@@ -2,6 +2,7 @@ import board
 import busio
 import digitalio
 import adafruit_st7565
+import time
 
 print("jake calico  feldspar cranshow rotashow CENOPIC")
 
@@ -55,12 +56,14 @@ def draw_circle(xpos0, ypos0, rad, col=1):
 
 # initial center of the circle
 center_x = 63
-center_y = 15
+center_y = 4
 # how fast does it move in each direction
 x_inc = 1
+y_inc = -1
 y_inc = 1
+
 # what is the starting radius of the circle
-radius = 8
+radius = 8 # was 8
 
 # start with a blank screen
 display.fill(0)
@@ -80,11 +83,12 @@ while True:
         x_inc = 1
 
     # if bouncing off top
-    if center_y + radius >= display.height:
+    # if center_y + radius >= (display.height // 8):  # no // 8 before
+    if center_y - radius >= 58: # has imaginary space margin about double the real space
         # start moving down
         y_inc = -1
     # if bouncing off bottom
-    elif center_y - radius < 0:
+    elif center_y + radius < 48:
         # start moving up
         y_inc = 1
 
@@ -95,6 +99,7 @@ while True:
     # draw the new circle
     draw_circle(center_x, center_y, radius)
     # show all the changes we just made
+    time.sleep(0.010)
     display.show()
 
 
