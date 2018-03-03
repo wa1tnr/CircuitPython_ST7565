@@ -4,15 +4,16 @@ import digitalio
 import adafruit_st7565
 import time
 
-print("jake calico  feldspar cranshow rotashow CENOPIC")
-
 backlight = digitalio.DigitalInOut(board.A4)
-data = board.MOSI   # Pin connected to backpack DAT/data.
-clk  = board.SCK    # Pin connected to backpack CLK.
+
+data = board.MOSI
+clk  = board.SCK
 a0   = digitalio.DigitalInOut(board.D2)
 rst  = digitalio.DigitalInOut(board.D1)
 cs   = digitalio.DigitalInOut(board.D0)
+
 backlight.switch_to_output(value=True, drive_mode=digitalio.DriveMode.PUSH_PULL)
+
 a0.switch_to_output(value  =True, drive_mode=digitalio.DriveMode.PUSH_PULL)
 rst.switch_to_output(value =True, drive_mode=digitalio.DriveMode.PUSH_PULL)
 cs.switch_to_output(value  =True, drive_mode=digitalio.DriveMode.PUSH_PULL)
@@ -21,10 +22,6 @@ cs.switch_to_output(value  =True, drive_mode=digitalio.DriveMode.PUSH_PULL)
 spi = busio.SPI(clk, MOSI=data)
 
 # Create the ST7565 gLCD class.
-# The first two parameters are the pixel width and pixel height.  Change these
-# to the right size for your display!
-# display = adafruit_ssd1306.SSD1306_I2C(128, 32, i2c)
-
 display = adafruit_st7565.ST7565_SPI(128, 64, spi, a0, rst, cs, external_vcc=False, baudrate=2000000, polarity=0, phase=0)
 
 # Helper function to draw a circle from a given position with a given radius
@@ -57,9 +54,10 @@ def draw_circle(xpos0, ypos0, rad, col=1):
 # initial center of the circle
 center_x = 63
 center_y = 4
+
 # how fast does it move in each direction
 x_inc = 1
-y_inc = -1
+# y_inc = -1
 y_inc = 1
 
 # what is the starting radius of the circle
@@ -69,6 +67,7 @@ radius = 8 # was 8
 display.fill(0)
 # we just blanked the framebuffer. to push the framebuffer onto the display, we call show()
 display.show()
+
 while True:
     # undraw the previous circle
     draw_circle(center_x, center_y, radius, col=0)
@@ -99,7 +98,6 @@ while True:
     # draw the new circle
     draw_circle(center_x, center_y, radius)
     # show all the changes we just made
-    time.sleep(0.010)
+    time.sleep(0.010) # optional
     display.show()
-
 
