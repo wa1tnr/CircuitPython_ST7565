@@ -1,4 +1,7 @@
- 
+// Sat  6 Nov 16:48:12 UTC 2021
+
+// Target: (likely, undocumented) Adafruit Feather M0 Express (checks made November 2021).
+
 // Sun Feb 25 05:49:32 UTC 2018
 
 // CALIPULLER   TALLOMEV    MONDIEUX    PALICA   CANFAW  ELKIND
